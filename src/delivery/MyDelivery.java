@@ -1,4 +1,5 @@
 package delivery;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +30,12 @@ public class MyDelivery {
 		// Los estamos lanzando secuencialmente
 		long initialTime = new Date().getTime();
 		LinkedList<Restaurante> listaRestaurantes = cadenaRestaurantes.getRestaurantes();
-		for (Pedido p:lp) {listaRestaurantes.get(p.getRestaurante()).tramitarPedido(p);}
+		List<Thread> threads = new ArrayList<Thread>();
+		for (Pedido p:lp) {
+			PedidoThread pedido = new PedidoThread(p, listaRestaurantes);
+			threads.add(pedido);
+			pedido.start();
+		}
 		
 		// AUDITORÍAS
 		for (Restaurante r:listaRestaurantes) 
