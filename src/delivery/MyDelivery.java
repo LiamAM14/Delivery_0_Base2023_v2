@@ -36,6 +36,9 @@ public class MyDelivery {
 			threads.add(pedido);
 			pedido.start();
 		}
+		for(Thread p:threads){
+			//p.join();
+		}
 		
 		// AUDITORÍAS
 		for (Restaurante r:listaRestaurantes) 
