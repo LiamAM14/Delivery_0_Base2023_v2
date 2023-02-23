@@ -14,7 +14,7 @@ import pcd.util.Traza;
 	public Restaurante (Account _ac, String _nombre, int _numeroMoteros) {
 		account = _ac;
 		nombre = _nombre;
-		controlMoteros = new ControlMoteros (this, 4);
+		controlMoteros = new ControlMoteros (this, Config.numeroMoteros);
 		cocina = new Cocina (this);
 		Traza.traza(ColoresConsola.GREEN_BOLD_BRIGHT, 1,"Creando restaurante: "+nombre);
 	}

@@ -18,6 +18,17 @@ public class ControlMoteros {
         r = _r;
         numeroMoteros = _numeroMoteros;
         moterosLibres = Config.numeroMoteros;
+        List<Moteros> moteros = new ArrayList<Moteros>();
+        for(int i = 0; i< numeroMoteros; i++){
+            Moteros m = new Moteros(i, this);
+            moteros.add(m);
+            m.start();
+        }
+        try{
+            for(int i = 0; i<moteros.size(); i++){
+                moteros.get(i).join();
+            }
+        }catch (Exception e){e.printStackTrace();}
 
         // Creamos una ventana para los mensajes de este objeto.
         v = new Ventana("Motero de Rest." + r.getNombre(), posicionVentana, 10);
@@ -54,4 +65,5 @@ public class ControlMoteros {
         System.out.println("El motero "+id+" ha regresado y esta disponible para repartir un pedido nuevo.");
         notifyAll();
     }
+
 }
