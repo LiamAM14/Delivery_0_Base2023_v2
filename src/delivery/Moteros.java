@@ -10,7 +10,12 @@ public class Moteros extends Thread{
     }
     public void run(){
         while(true){
-            //controlMoteros.getPedido(id);
+            Pedido p = controlMoteros.getPedido(id);
+            System.out.println("Repartiendo pedido "+p.idPedido+"...");
+            controlMoteros.regresaMotero(id);
+            try{
+                Thread.currentThread().sleep(100);
+            }catch (Exception e){}
         }
     }
 
