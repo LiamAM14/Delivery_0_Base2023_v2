@@ -4,7 +4,7 @@ import bank.*;
 import pcd.util.ColoresConsola;
 import pcd.util.Traza;
 
- public class Restaurante {
+ public class Restaurante{
 	private String nombre;					// nombre del restaurante
 	private Account account;				// cuenta bancaria para registrar la recaudación
 	private Cocina cocina; 					// la cocina de este restaurante
@@ -14,12 +14,13 @@ import pcd.util.Traza;
 	public Restaurante (Account _ac, String _nombre, int _numeroMoteros) {
 		account = _ac;
 		nombre = _nombre;
-		controlMoteros = new ControlMoteros (this, Config.numeroMoteros);
+		controlMoteros = new ControlMoteros (this, _numeroMoteros);
 		cocina = new Cocina (this);
 		Traza.traza(ColoresConsola.GREEN_BOLD_BRIGHT, 1,"Creando restaurante: "+nombre);
 	}
-	
-	public String getNombre () {
+
+
+	 public String getNombre () {
 		return nombre;
 	}
 	
@@ -32,12 +33,11 @@ import pcd.util.Traza;
 	}
 	
 	public void tramitarPedido (Pedido _p) {
-		Pedido p =_p;
 		// Tramitar un pedido es:
-		account.deposit(p.getPrecioPedido()); 	// añadir la cantidad abonada a la cuenta del banco
+		System.out.println("hola");
+		account.deposit(_p.getPrecioPedido()); 	// añadir la cantidad abonada a la cuenta del banco
 		controlMoteros.asignarMotero();
-		cocina.cocinar(p);						// mandar el pedido a cocina
-		controlMoteros.enviarPedido(p);			// una vez cocinado, mandarlo a los moteros para que uno lo coja
-
+		cocina.cocinar(_p);						// mandar el pedido a cocina
+		controlMoteros.enviarPedido(_p);		// una vez cocinado, mandarlo a los moteros para que uno lo coja
 	}
 }

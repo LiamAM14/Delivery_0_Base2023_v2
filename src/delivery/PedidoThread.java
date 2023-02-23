@@ -9,7 +9,10 @@ public class PedidoThread extends Thread {
         pedido = _p;
         restaurante = restaurantes.get(pedido.getRestaurante());
     }
+
     public void run () {
+        System.out.println("holaPedido");
         restaurante.tramitarPedido(pedido);
     }
+
 }

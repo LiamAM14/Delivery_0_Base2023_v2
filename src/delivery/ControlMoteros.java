@@ -11,6 +11,7 @@ public class ControlMoteros {
     Restaurante r;
     Ventana v;
     List<Pedido> listaPedidos = new ArrayList<Pedido>();
+    List<Moteros> moteros = new ArrayList<Moteros>();
 
     static int posicionVentana = 10;
 
@@ -18,21 +19,12 @@ public class ControlMoteros {
         r = _r;
         numeroMoteros = _numeroMoteros;
         moterosLibres = Config.numeroMoteros;
-        List<Moteros> moteros = new ArrayList<Moteros>();
-        for(int i = 0; i< numeroMoteros; i++){
+
+        for (int i = 0; i < numeroMoteros; i++) {
             Moteros m = new Moteros(i, this);
             moteros.add(m);
             m.start();
         }
-        try{
-            for(int i = 0; i<moteros.size(); i++){
-                moteros.get(i).join();
-            }
-        }catch (Exception e){e.printStackTrace();}
-
-        // Creamos una ventana para los mensajes de este objeto.
-        v = new Ventana("Motero de Rest." + r.getNombre(), posicionVentana, 10);
-        posicionVentana += 250;
     }
 
     public synchronized void enviarPedido(Pedido p) {
@@ -41,12 +33,14 @@ public class ControlMoteros {
     }
 
     public synchronized Pedido getPedido(int id) {
-        while(listaPedidos.size()==0) try{
+        while (listaPedidos.size() == 0) try {
             System.out.println("Esperando a que se realice un pedido nuevo.");
             wait();
-        }catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Pedido p = listaPedidos.get(0);
-        System.out.println("El motero "+id+" se encargará de repartir el pedido "+p.idPedido);
+        System.out.println("El motero " + id + " se encargará de repartir el pedido " + p.idPedido);
         listaPedidos.remove(0);
         return p;
     }
@@ -55,14 +49,16 @@ public class ControlMoteros {
         while (moterosLibres == 0) try {
             System.out.println("No quedan moteros disponibles, por favor espere a que regresen de sus entregas.");
             wait();
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         moterosLibres--;
         System.out.println("Se ha reservado un motero para su pedido.");
     }
 
-    public synchronized void regresaMotero(int id){
+    public synchronized void regresaMotero(int id) {
         moterosLibres++;
-        System.out.println("El motero "+id+" ha regresado y esta disponible para repartir un pedido nuevo.");
+        System.out.println("El motero " + id + " ha regresado y esta disponible para repartir un pedido nuevo.");
         notifyAll();
     }
 

@@ -22,11 +22,12 @@ public class MyDelivery {
         // Obtenemos una lista de pedidos
         List<Pedido> lp;
         lp = new LinkedList<>();
-        lp = Pedido.pedidosDesdeFichero("C:/Users/mauch/Desktop/UNIVERSIDAD/2º/PCD/Delivery_0_Base2023_v2/src/pedidos5.bin"); // Pon aquí la ruta y nombre de tu fichero
+        lp = Pedido.pedidosDesdeFichero("src/pedidos5.bin"); // Pon aquí la ruta y nombre de tu fichero
 
         // También puedes crear tus propios pedidos usando el método generaPedidos de la clase Pedido.
         // En la clase Pedido también tienes un método para volcar esos pedidos a un fichero.
 
+        System.out.println("Hola HAFEL");
         // LANZAR PEDIDOS
         // Los estamos lanzando secuencialmente
         long initialTime = new Date().getTime();
@@ -45,6 +46,7 @@ public class MyDelivery {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
 
 
         // AUDITORÍAS
