@@ -4,16 +4,17 @@ import pcd.util.Ventana;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class ControlMoteros {
-    int numeroMoteros;
-    int moterosLibres;
-    Restaurante r;
-    Ventana v;
-    List<Pedido> listaPedidos = new ArrayList<Pedido>();
-    List<Moteros> moteros = new ArrayList<Moteros>();
+    private int numeroMoteros;
+    Semaphore semaphore;
+    private int moterosLibres;
+    private Restaurante r;
+    private List<Pedido> listaPedidos = new ArrayList<Pedido>();
+    private List<Moteros> moteros = new ArrayList<Moteros>();
+    private Boolean finPedidos = false;
 
-    static int posicionVentana = 10;
 
     public ControlMoteros(Restaurante _r, int _numeroMoteros) {
         r = _r;
@@ -25,6 +26,7 @@ public class ControlMoteros {
             moteros.add(m);
             m.start();
         }
+        semaphore = new Semaphore(numeroMoteros);
     }
 
     public synchronized void enviarPedido(Pedido p) {
@@ -33,7 +35,7 @@ public class ControlMoteros {
     }
 
     public synchronized Pedido getPedido(int id) {
-        while (listaPedidos.size() == 0) try {
+        while (listaPedidos.size() == 0&&!finPedidos) try {
             System.out.println("Esperando a que se realice un pedido nuevo.");
             wait();
         } catch (Exception e) {
@@ -53,13 +55,29 @@ public class ControlMoteros {
             e.printStackTrace();
         }
         moterosLibres--;
+        try {
+            semaphore.acquire();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("Se ha reservado un motero para su pedido.");
+    }
+
+    public synchronized void esperarMoteros(){
+        while(semaphore.availablePermits()!=numeroMoteros){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public synchronized void regresaMotero(int id) {
         moterosLibres++;
         System.out.println("El motero " + id + " ha regresado y esta disponible para repartir un pedido nuevo.");
         notifyAll();
+        semaphore.release();
     }
 
 }

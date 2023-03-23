@@ -9,6 +9,7 @@ public class Moteros extends Thread{
         controlMoteros = CM;
     }
     public void run(){
+        controlMoteros.esperarMoteros();
         while(true){
             Pedido p = controlMoteros.getPedido(id);
             System.out.println("Repartiendo pedido "+p.idPedido+"...");

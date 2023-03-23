@@ -5,9 +5,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class BufferPollo {
-    int cuantos = 0;
-    int N = 1;
-    int recurso [] = new int[N];
+    private int cuantos = 0;
+    private int N = 1;
+    private int recurso [] = new int[N];
 
     final Lock lock = new ReentrantLock(true);
     final Condition lleno = lock.newCondition();

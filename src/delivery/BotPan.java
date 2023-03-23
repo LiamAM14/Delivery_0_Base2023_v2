@@ -1,8 +1,9 @@
 package delivery;
 
 public class BotPan implements Runnable{
-    int id;
-    BufferPan buffer;
+    private int id;
+    private BufferPan buffer;
+    private Cocina cocina;
 
     public BotPan(int _id, BufferPan _buffer){
         id = _id;
@@ -10,10 +11,14 @@ public class BotPan implements Runnable{
     }
 
     public void run(){
-        for (int i=0; i<3; i++){
+
             try {
-                buffer.insertar(i);
+                while(true) {
+                    for (int i=0; i<3; i++) {
+                        buffer.insertar(i);
+                    }
+                }
             }catch (Exception e){}
         }
-    }
+
 }

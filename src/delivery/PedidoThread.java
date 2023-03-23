@@ -11,7 +11,6 @@ public class PedidoThread extends Thread {
     }
 
     public void run () {
-        System.out.println("holaPedido");
         restaurante.tramitarPedido(pedido);
     }
 

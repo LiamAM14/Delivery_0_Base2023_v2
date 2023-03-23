@@ -1,9 +1,9 @@
 package delivery;
 
 public class BotPollo implements Runnable{
-    int id;
-    BufferPollo buffer;
-
+    private int id;
+    private BufferPollo buffer;
+    private Cocina cocina;
     public BotPollo(int _id, BufferPollo _buffer){
         id = _id;
         buffer = _buffer;
@@ -11,7 +11,9 @@ public class BotPollo implements Runnable{
 
     public void run(){
         try {
-            buffer.insertar(1);
+            while(true) {
+                buffer.insertar(1);
+            }
         }catch (Exception e){}
     }
 }

@@ -5,11 +5,11 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class BufferPan {
-    int cuantos = 0;
-    int N = 3;
-    int recurso[] = new int[N];
-    int frente = 0;
-    int cola = 0;
+    private int cuantos = 0;
+    private int N = 3;
+    private int recurso[] = new int[N];
+    private int frente = 0;
+    private int cola = 0;
 
     final Lock lock = new ReentrantLock(true);
     final Condition lleno = lock.newCondition();
@@ -23,11 +23,9 @@ public class BufferPan {
         try {
             while (cuantos == N)
                 lleno.await();
-            System.out.println("Cogiendo pan...");
             recurso[frente] = pan;
             frente = (frente+1)%N;
             cuantos++;
-            System.out.println("OKpan");
             vacio.signal();
         }finally {
             lock.unlock();
@@ -37,13 +35,11 @@ public class BufferPan {
     public int extraer() throws InterruptedException{
         lock.lock();
         try{
-            while (cuantos == N)
+            while (cuantos == 0)
                 vacio.await();
-            System.out.println("Sacando Pan...");
             int result = recurso[cola];
             cola = (cola+1)%N;
             cuantos--;
-            System.out.println("Sacando pan: "+result);
             lleno.signal();
             return result;
         }finally {
