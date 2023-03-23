@@ -12,8 +12,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.function.Predicate;
 
-public class Pedido implements Serializable {
+public class Pedido implements Serializable, Predicate {
 
 	private static final long serialVersionUID = 1L; 
 	
@@ -160,5 +161,9 @@ public class Pedido implements Serializable {
 		} catch (Exception e) {e.printStackTrace();}
 		return l;
 	}
-	
+
+	@Override
+	public boolean test(Object o) {
+		return false;
+	}
 }

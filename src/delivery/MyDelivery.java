@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import pcd.util.Traza;
 
@@ -12,6 +14,8 @@ public class MyDelivery {
     public MyDelivery() {
         // para facilitar las trazas
         Traza.setNivel(Config.modoTraza);
+        int nucleos = Runtime.getRuntime().availableProcessors();
+        Executor executor = Executors.newFixedThreadPool(nucleos);
 
 
         // Creando los restaurantes
@@ -52,9 +56,14 @@ public class MyDelivery {
         LinkedList<Restaurante> listaRestaurantes = cadenaRestaurantes.getRestaurantes();
         List<Thread> threads = new ArrayList<Thread>();
         for (Pedido p : lp) {
-            PedidoThread pedido = new PedidoThread(p, listaRestaurantes);
-            threads.add(pedido);
-            pedido.start();
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    PedidoThread thread = new PedidoThread(p, listaRestaurantes);
+                    thread.run();
+                }
+            };
+            executor.execute(runnable);
         }
 
         try {
@@ -73,6 +82,11 @@ public class MyDelivery {
         System.out.println("\nAuditoria Cadena: " + cadenaRestaurantes.getBank().audit(0, Config.numeroRestaurantes));
 
         System.out.println("Tiempo total invertido en la tramitación: " + (new Date().getTime() - initialTime));
+
+        List<Pedido> pedidos7euros = lp.stream().filter(a -> a.getPrecioPedido()<7).toList();
+        for (Pedido p : pedidos7euros){
+            System.out.println(p.getId()+" -> "+p.getPrecioPedido());
+        }
     }
 
     public static void main(String[] args) {

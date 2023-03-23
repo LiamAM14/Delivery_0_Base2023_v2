@@ -8,7 +8,7 @@ import java.util.concurrent.Semaphore;
 
 public class ControlMoteros {
     private int numeroMoteros;
-    Semaphore semaphore;
+    private Semaphore semaphore;
     private int moterosLibres;
     private Restaurante r;
     private List<Pedido> listaPedidos = new ArrayList<Pedido>();
@@ -20,13 +20,14 @@ public class ControlMoteros {
         r = _r;
         numeroMoteros = _numeroMoteros;
         moterosLibres = Config.numeroMoteros;
+        semaphore = new Semaphore(numeroMoteros);
 
         for (int i = 0; i < numeroMoteros; i++) {
             Moteros m = new Moteros(i, this);
             moteros.add(m);
             m.start();
         }
-        semaphore = new Semaphore(numeroMoteros);
+
     }
 
     public synchronized void enviarPedido(Pedido p) {
